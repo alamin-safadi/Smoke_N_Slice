@@ -103,7 +103,7 @@ Stripe-ready payment structure
 
 ⚙️ Installation Guide
 1️⃣ Clone Repository
-git clone https://github.com/your-username/smoke-n-slice.git
+git clone https://github.com/alamin-safadi/Smoke_N_Slice.git
 cd smoke-n-slice
 2️⃣ Create Virtual Environment
 python -m venv smoke_env
