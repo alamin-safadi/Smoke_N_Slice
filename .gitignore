@@ -1,0 +1,20 @@
+# Virtual Environment
+smoke_env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Database
+db.sqlite3
+
+# Environment variables
+.env
+
+# Static & Media
+media/
+staticfiles/
+
+# VS Code
+.vscode/

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smoke N Slice - Menu</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background: #f8f9fa;
+        }
+        .header { 
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white; 
+            padding: 20px; 
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .category { 
+            margin: 30px 0; 
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .category-title {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .items-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+        .item-card { 
+            border: 1px solid #e0e0e0; 
+            padding: 20px; 
+            border-radius: 8px;
+            background: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .item-name {
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        .item-description {
+            color: #7f8c8d;
+            margin: 0 0 10px 0;
+            font-size: 14px;
+        }
+        .item-price {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 0 15px 0;
+        }
+        .quantity-input { 
+            width: 80px; 
+            padding: 8px;
+            border: 2px solid #bdc3c7;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .proceed-btn { 
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 8px; 
+            margin-top: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .proceed-btn:hover {
+            transform: scale(1.05);
+        }
+        .form-actions {
+            text-align: center;
+        }
+        .messages {
+            margin: 20px 0;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Smoke N Slice - Menu</h1>
+        <div class="user-info">
+            <span>Welcome, <strong>{{ request.user.username }}</strong></span>
+            <a href="{% url 'accounts:logout' %}" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="error">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for category in categories %}
+            <div class="category">
+                <h2 class="category-title">{{ category.name }}</h2>
+                {% if category.description %}
+                    <p style="color: #7f8c8d; margin-bottom: 20px;">{{ category.description }}</p>
+                {% endif %}
+                
+                <div class="items-grid">
+                    {% for item in items %}
+                        {% if item.category == category %}
+                        <div class="item-card">
+                            <h3 class="item-name">{{ item.name }}</h3>
+                            <p class="item-description">{{ item.description }}</p>
+                            <p class="item-price">${{ item.price }}</p>
+                            <label><strong>Quantity:</strong></label>
+                            <input type="number" name="item_{{ item.id }}" value="0" min="0" class="quantity-input">
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            
+            <div class="form-actions">
+                <button type="submit" class="proceed-btn">Proceed to Order Summary</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
